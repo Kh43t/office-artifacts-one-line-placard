@@ -24,7 +24,7 @@
 // scorer can only ever see a valid entry. The output is deterministic:
 // both grading runs write the same placard.
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
 // The placard. One line, 157 characters.
@@ -66,6 +66,14 @@ function main(): void {
   // Mode 0644 so the grader can read the file as another user.
   // No trailing newline: the file holds exactly the placard, nothing else.
   writeFileSync(OUTPUT_PATH, PLACARD, { encoding: "utf8", mode: 0o644 });
+  // Read the file back and re-check it, so a write that silently
+  // truncated or altered the line fails loudly instead of shipping
+  // a placard the gate would refuse.
+  const written = readFileSync(OUTPUT_PATH, { encoding: "utf8" });
+  if (written !== PLACARD) {
+    throw new Error("written entry does not match the placard");
+  }
+  checkPlacard(written);
 }
 
 main();
