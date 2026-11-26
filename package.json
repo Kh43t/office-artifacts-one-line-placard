@@ -1,0 +1,1 @@
+{"description":"A make.fun program/v1 entry: one museum placard for an office printer, recast as an ancient oracle.","engines":{"node":">=22.18"},"license":"MIT","main":"main.ts","name":"office-artifacts-one-line-placard","private":true,"scripts":{"start":"node main.ts"},"type":"module","version":"1.0.0"}
